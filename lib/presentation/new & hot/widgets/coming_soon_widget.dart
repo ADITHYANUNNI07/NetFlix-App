@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix/core/color/colors.dart';
 import 'package:netflix/core/costant.dart';
-import 'package:netflix/presentation/new%20&%20hot/screen_new_and_hot.dart';
 import 'package:netflix/presentation/new%20&%20hot/widgets/everyone_watching_widget.dart';
 import 'package:netflix/presentation/widgets/main_title.dart';
 import 'package:netflix/presentation/widgets/video_widget.dart';
