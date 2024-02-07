@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:netflix/core/color/colors.dart';
 import 'package:netflix/core/costant.dart';
 import 'package:netflix/presentation/search/widget/search_result.dart';
 
@@ -16,14 +17,14 @@ class SearchScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: CupertinoSearchTextField(
-              backgroundColor: Colors.grey.withOpacity(0.5),
+              backgroundColor: colorGrey.withOpacity(0.5),
               prefixIcon: const Icon(
                 CupertinoIcons.search,
-                color: Colors.grey,
+                color: colorGrey,
               ),
               suffixIcon: const Icon(
                 CupertinoIcons.xmark_circle_fill,
-                color: Colors.grey,
+                color: colorGrey,
               ),
               style: const TextStyle(color: Colors.white),
             ),

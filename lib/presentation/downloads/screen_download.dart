@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:netflix/appbar_widgets.dart';
+import 'package:netflix/presentation/widgets/appbar_widgets.dart';
 import 'package:netflix/core/color/colors.dart';
 import 'package:netflix/core/costant.dart';
 
@@ -135,7 +135,7 @@ class SectionTwoWidget extends StatelessWidget {
           "We'll download a personalised selection of\nmovies and shows for you, so there's\nalways something watch on your\ndevice.",
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontWeight: FontWeight.w600, fontSize: 18, color: Colors.grey),
+              fontWeight: FontWeight.w600, fontSize: 18, color: colorGrey),
         ),
         SizedBox(
           width: size.width,
@@ -145,7 +145,7 @@ class SectionTwoWidget extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: size.width * 0.38,
-                backgroundColor: Colors.grey.withOpacity(0.4),
+                backgroundColor: colorGrey.withOpacity(0.4),
               ),
               DownloadsImageRotateWidget(
                 width: 0.4,

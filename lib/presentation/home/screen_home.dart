@@ -63,9 +63,9 @@ class HomeScreen extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    Image.network(
-                                      'https://seeklogo.com/images/N/netflix-n-logo-0F1ED3EBEB-seeklogo.com.png',
-                                      width: 50,
+                                    Image.asset(
+                                      'assets/images/logonetflix-removebg-preview.png',
+                                      width: 20,
                                     ),
                                     const Spacer(),
                                     const Icon(

@@ -20,10 +20,10 @@ class BottomNavigatorWidget extends StatelessWidget {
             backgroundColor: colorBlack,
             currentIndex: newIndex,
             selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.grey.withOpacity(0.6),
+            unselectedItemColor: colorGrey.withOpacity(0.6),
             selectedIconTheme: const IconThemeData(color: Colors.white),
             unselectedIconTheme:
-                IconThemeData(color: Colors.grey.withOpacity(0.6)),
+                IconThemeData(color: colorGrey.withOpacity(0.6)),
             items: const [
               BottomNavigationBarItem(
                   icon: Icon(Icons.home_outlined), label: 'Home'),

@@ -1,0 +1,3 @@
+const apikey = '124fb309cb19a1f252d79b36d577ed08';
+const accessToken =
+    'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjRmYjMwOWNiMTlhMWYyNTJkNzliMzZkNTc3ZWQwOCIsInN1YiI6IjY1YmUwNTllYTdlMzYzMDFiNzUzZmYxMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Ohb4ifYSzEf93xJrEkbiyGEbiWZDrG5IF8S-8Jbv6AU';

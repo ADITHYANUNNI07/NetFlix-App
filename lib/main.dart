@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Netflix',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
         iconTheme: const IconThemeData(color: Colors.white),
         scaffoldBackgroundColor: colorBlack,
         textTheme: GoogleFonts.poppinsTextTheme()
