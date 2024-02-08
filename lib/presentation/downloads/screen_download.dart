@@ -1,25 +1,38 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix/application/downloads_bloc/downloads_bloc.dart';
+import 'package:netflix/core/string.dart';
 import 'package:netflix/presentation/widgets/appbar_widgets.dart';
 import 'package:netflix/core/color/colors.dart';
 import 'package:netflix/core/costant.dart';
 
 class DownloadsScreen extends StatelessWidget {
-  DownloadsScreen({super.key});
-  final imageList = [
-    'https://image.tmdb.org/t/p/w600_and_h900_bestv2/7lTnXOy0iNtBAdRP3TZvaKJ77F6.jpg',
-    'https://image.tmdb.org/t/p/w600_and_h900_bestv2/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg',
-    'https://image.tmdb.org/t/p/w600_and_h900_bestv2/zVMyvNowgbsBAL6O6esWfRpAcOb.jpg'
-  ];
+  const DownloadsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    //WidgetsBinding.instance.addPostFrameCallback((_) {
+    BlocProvider.of<DownloadsBloc>(context)
+        .add(const DownloadsEvent.getDownloadsImages());
+    // });
+
     final widgetList = [
       const SectionOneWidget(),
       sizedHeghitT,
-      SectionTwoWidget(size: size, imageList: imageList),
+      BlocBuilder<DownloadsBloc, DownloadsState>(
+        builder: (context, state) {
+          return SectionTwoWidget(
+              size: size,
+              imageList: state.downloads
+                      ?.map(
+                          (download) => '$imageAppendUrl${download.posterPath}')
+                      .toList() ??
+                  []);
+        },
+      ),
       const SectionThreeWidget()
     ];
     return SafeArea(
