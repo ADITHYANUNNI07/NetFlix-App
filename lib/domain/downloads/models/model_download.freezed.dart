@@ -22,6 +22,10 @@ Downloads _$DownloadsFromJson(Map<String, dynamic> json) {
 mixin _$Downloads {
   @JsonKey(name: 'poster_path')
   String? get posterPath => throw _privateConstructorUsedError;
+  @JsonKey(name: 'backdrop_path')
+  String? get backdropPath => throw _privateConstructorUsedError;
+  @JsonKey(name: 'title')
+  String? get moiveTitle => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +38,10 @@ abstract class $DownloadsCopyWith<$Res> {
   factory $DownloadsCopyWith(Downloads value, $Res Function(Downloads) then) =
       _$DownloadsCopyWithImpl<$Res, Downloads>;
   @useResult
-  $Res call({@JsonKey(name: 'poster_path') String? posterPath});
+  $Res call(
+      {@JsonKey(name: 'poster_path') String? posterPath,
+      @JsonKey(name: 'backdrop_path') String? backdropPath,
+      @JsonKey(name: 'title') String? moiveTitle});
 }
 
 /// @nodoc
@@ -51,11 +58,21 @@ class _$DownloadsCopyWithImpl<$Res, $Val extends Downloads>
   @override
   $Res call({
     Object? posterPath = freezed,
+    Object? backdropPath = freezed,
+    Object? moiveTitle = freezed,
   }) {
     return _then(_value.copyWith(
       posterPath: freezed == posterPath
           ? _value.posterPath
           : posterPath // ignore: cast_nullable_to_non_nullable
+              as String?,
+      backdropPath: freezed == backdropPath
+          ? _value.backdropPath
+          : backdropPath // ignore: cast_nullable_to_non_nullable
+              as String?,
+      moiveTitle: freezed == moiveTitle
+          ? _value.moiveTitle
+          : moiveTitle // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -69,7 +86,10 @@ abstract class _$$DownloadsImplCopyWith<$Res>
       __$$DownloadsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: 'poster_path') String? posterPath});
+  $Res call(
+      {@JsonKey(name: 'poster_path') String? posterPath,
+      @JsonKey(name: 'backdrop_path') String? backdropPath,
+      @JsonKey(name: 'title') String? moiveTitle});
 }
 
 /// @nodoc
@@ -84,11 +104,21 @@ class __$$DownloadsImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? posterPath = freezed,
+    Object? backdropPath = freezed,
+    Object? moiveTitle = freezed,
   }) {
     return _then(_$DownloadsImpl(
       posterPath: freezed == posterPath
           ? _value.posterPath
           : posterPath // ignore: cast_nullable_to_non_nullable
+              as String?,
+      backdropPath: freezed == backdropPath
+          ? _value.backdropPath
+          : backdropPath // ignore: cast_nullable_to_non_nullable
+              as String?,
+      moiveTitle: freezed == moiveTitle
+          ? _value.moiveTitle
+          : moiveTitle // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -98,7 +128,9 @@ class __$$DownloadsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$DownloadsImpl implements _Downloads {
   const _$DownloadsImpl(
-      {@JsonKey(name: 'poster_path') required this.posterPath});
+      {@JsonKey(name: 'poster_path') required this.posterPath,
+      @JsonKey(name: 'backdrop_path') required this.backdropPath,
+      @JsonKey(name: 'title') required this.moiveTitle});
 
   factory _$DownloadsImpl.fromJson(Map<String, dynamic> json) =>
       _$$DownloadsImplFromJson(json);
@@ -106,10 +138,16 @@ class _$DownloadsImpl implements _Downloads {
   @override
   @JsonKey(name: 'poster_path')
   final String? posterPath;
+  @override
+  @JsonKey(name: 'backdrop_path')
+  final String? backdropPath;
+  @override
+  @JsonKey(name: 'title')
+  final String? moiveTitle;
 
   @override
   String toString() {
-    return 'Downloads(posterPath: $posterPath)';
+    return 'Downloads(posterPath: $posterPath, backdropPath: $backdropPath, moiveTitle: $moiveTitle)';
   }
 
   @override
@@ -118,12 +156,17 @@ class _$DownloadsImpl implements _Downloads {
         (other.runtimeType == runtimeType &&
             other is _$DownloadsImpl &&
             (identical(other.posterPath, posterPath) ||
-                other.posterPath == posterPath));
+                other.posterPath == posterPath) &&
+            (identical(other.backdropPath, backdropPath) ||
+                other.backdropPath == backdropPath) &&
+            (identical(other.moiveTitle, moiveTitle) ||
+                other.moiveTitle == moiveTitle));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, posterPath);
+  int get hashCode =>
+      Object.hash(runtimeType, posterPath, backdropPath, moiveTitle);
 
   @JsonKey(ignore: true)
   @override
@@ -141,7 +184,9 @@ class _$DownloadsImpl implements _Downloads {
 
 abstract class _Downloads implements Downloads {
   const factory _Downloads(
-          {@JsonKey(name: 'poster_path') required final String? posterPath}) =
+          {@JsonKey(name: 'poster_path') required final String? posterPath,
+          @JsonKey(name: 'backdrop_path') required final String? backdropPath,
+          @JsonKey(name: 'title') required final String? moiveTitle}) =
       _$DownloadsImpl;
 
   factory _Downloads.fromJson(Map<String, dynamic> json) =
@@ -150,6 +195,12 @@ abstract class _Downloads implements Downloads {
   @override
   @JsonKey(name: 'poster_path')
   String? get posterPath;
+  @override
+  @JsonKey(name: 'backdrop_path')
+  String? get backdropPath;
+  @override
+  @JsonKey(name: 'title')
+  String? get moiveTitle;
   @override
   @JsonKey(ignore: true)
   _$$DownloadsImplCopyWith<_$DownloadsImpl> get copyWith =>

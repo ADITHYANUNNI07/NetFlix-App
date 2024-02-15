@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -24,7 +26,7 @@ class DownloadRepository implements IdownloadsRepo {
         return const Left(MainFailure.serverFailure());
       }
     } catch (e) {
-      (e.toString());
+      log(e.toString());
       return const Left(MainFailure.clientFailure());
     }
   }

@@ -2,11 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:netflix/application/downloads_bloc/downloads_bloc.dart';
+import 'package:netflix/application/downloads/downloads_bloc.dart';
 import 'package:netflix/core/string.dart';
 import 'package:netflix/presentation/widgets/appbar_widgets.dart';
 import 'package:netflix/core/color/colors.dart';
 import 'package:netflix/core/costant.dart';
+import 'package:shimmer/shimmer.dart';
 
 class DownloadsScreen extends StatelessWidget {
   const DownloadsScreen({super.key});
@@ -14,23 +15,28 @@ class DownloadsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    //WidgetsBinding.instance.addPostFrameCallback((_) {
-    BlocProvider.of<DownloadsBloc>(context)
-        .add(const DownloadsEvent.getDownloadsImages());
-    // });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<DownloadsBloc>(context)
+          .add(const DownloadsEvent.getDownloadsImages());
+    });
 
     final widgetList = [
       const SectionOneWidget(),
       sizedHeghitT,
       BlocBuilder<DownloadsBloc, DownloadsState>(
         builder: (context, state) {
-          return SectionTwoWidget(
-              size: size,
-              imageList: state.downloads
-                      ?.map(
-                          (download) => '$imageAppendUrl${download.posterPath}')
-                      .toList() ??
-                  []);
+          return state.isloading
+              ? SectionTwoWidget(
+                  isloading: true, size: size, imageList: const [])
+              : SectionTwoWidget(
+                  isloading: false,
+                  size: size,
+                  imageList: state.downloads
+                          ?.map((download) =>
+                              '$imageAppendUrl${download.posterPath}')
+                          .toList() ??
+                      []);
         },
       ),
       const SectionThreeWidget()
@@ -44,7 +50,7 @@ class DownloadsScreen extends StatelessWidget {
               appbarText: 'Downloads',
             )),
         body: Padding(
-            padding: const EdgeInsets.only(left: 18, right: 18),
+            padding: const EdgeInsets.only(left: 10, right: 10),
             child: ListView.separated(
               itemBuilder: (context, index) => widgetList[index],
               itemCount: widgetList.length,
@@ -129,8 +135,9 @@ class SectionTwoWidget extends StatelessWidget {
     super.key,
     required this.size,
     required this.imageList,
+    required this.isloading,
   });
-
+  final bool isloading;
   final Size size;
   final List<String> imageList;
 
@@ -145,48 +152,100 @@ class SectionTwoWidget extends StatelessWidget {
         ),
         sizedHeghitT,
         const Text(
-          "We'll download a personalised selection of\nmovies and shows for you, so there's\nalways something watch on your\ndevice.",
+          "We'll download a personalised selection of movies and shows for you, so there's always something watch on your device.",
           textAlign: TextAlign.center,
           style: TextStyle(
               fontWeight: FontWeight.w600, fontSize: 18, color: colorGrey),
         ),
-        SizedBox(
-          width: size.width,
-          height: size.width,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              CircleAvatar(
-                radius: size.width * 0.38,
-                backgroundColor: colorGrey.withOpacity(0.4),
-              ),
-              DownloadsImageRotateWidget(
-                width: 0.4,
-                height: 0.58,
-                size: size,
-                imageUrl: imageList[0],
-                rotationAngle: 25,
-                margin: const EdgeInsets.only(left: 135, bottom: 30),
-              ),
-              DownloadsImageRotateWidget(
-                height: 0.58,
-                width: 0.4,
-                size: size,
-                imageUrl: imageList[1],
-                rotationAngle: -25,
-                margin: const EdgeInsets.only(right: 135, bottom: 30),
-              ),
-              DownloadsImageRotateWidget(
-                height: 0.63,
-                width: 0.40,
-                size: size,
-                imageUrl: imageList[2],
-                margin: const EdgeInsets.only(),
+        isloading
+            ? Shimmer.fromColors(
+                baseColor: Colors.grey.shade900.withOpacity(0.9),
+                highlightColor: colorGrey.shade800,
+                child: ThreeImageContainerWidget(
+                    size: size, isloading: isloading, imageList: imageList),
               )
-            ],
-          ),
-        ),
+            : ThreeImageContainerWidget(
+                size: size, isloading: isloading, imageList: imageList),
       ],
+    );
+  }
+}
+
+class ThreeImageContainerWidget extends StatelessWidget {
+  const ThreeImageContainerWidget({
+    super.key,
+    required this.size,
+    required this.isloading,
+    required this.imageList,
+  });
+
+  final Size size;
+  final bool isloading;
+  final List<String> imageList;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size.width,
+      height: size.width,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          CircleAvatar(
+            radius: size.width * 0.38,
+            backgroundColor: colorGrey.withOpacity(0.4),
+          ),
+          isloading
+              ? DownloadsImageRotateWidget(
+                  width: 0.4,
+                  height: 0.58,
+                  size: size,
+                  imageUrl: null,
+                  rotationAngle: 20,
+                  margin: const EdgeInsets.only(left: 135, bottom: 30),
+                )
+              : DownloadsImageRotateWidget(
+                  width: 0.4,
+                  height: 0.58,
+                  size: size,
+                  imageUrl: imageList.isEmpty ? null : imageList[0],
+                  rotationAngle: 20,
+                  margin: const EdgeInsets.only(left: 135, bottom: 30),
+                ),
+          isloading
+              ? DownloadsImageRotateWidget(
+                  height: 0.58,
+                  width: 0.4,
+                  size: size,
+                  imageUrl: null,
+                  rotationAngle: -20,
+                  margin: const EdgeInsets.only(right: 135, bottom: 30),
+                )
+              : DownloadsImageRotateWidget(
+                  height: 0.58,
+                  width: 0.4,
+                  size: size,
+                  imageUrl: imageList.isEmpty ? null : imageList[1],
+                  rotationAngle: -20,
+                  margin: const EdgeInsets.only(right: 135, bottom: 30),
+                ),
+          isloading
+              ? DownloadsImageRotateWidget(
+                  height: 0.63,
+                  width: 0.40,
+                  size: size,
+                  imageUrl: null,
+                  margin: const EdgeInsets.only(),
+                )
+              : DownloadsImageRotateWidget(
+                  height: 0.63,
+                  width: 0.40,
+                  size: size,
+                  imageUrl: imageList.isEmpty ? null : imageList[2],
+                  margin: const EdgeInsets.only(),
+                )
+        ],
+      ),
     );
   }
 }
@@ -204,7 +263,7 @@ class DownloadsImageRotateWidget extends StatelessWidget {
   final double width;
   final double height;
   final Size size;
-  final String imageUrl;
+  final String? imageUrl;
   final double rotationAngle;
   final EdgeInsets margin;
   @override
@@ -217,9 +276,11 @@ class DownloadsImageRotateWidget extends StatelessWidget {
         height: size.width * height,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.black,
-            image: DecorationImage(
-                image: NetworkImage(imageUrl), fit: BoxFit.cover)),
+            color: Colors.grey.shade900.withOpacity(0.9),
+            image: imageUrl == null
+                ? null
+                : DecorationImage(
+                    image: NetworkImage(imageUrl!), fit: BoxFit.cover)),
       ),
     );
   }

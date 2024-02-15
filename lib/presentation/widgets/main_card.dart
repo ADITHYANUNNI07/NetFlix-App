@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/core/costant.dart';
-import 'package:netflix/presentation/search/widget/search_result.dart';
+import 'package:netflix/core/string.dart';
 
 class MainCardWidget extends StatelessWidget {
   const MainCardWidget({
@@ -20,7 +20,9 @@ class MainCardWidget extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: borderRadius10,
             image: const DecorationImage(
-                image: NetworkImage(imageUrl), fit: BoxFit.cover)),
+                image: NetworkImage(
+                    '$imageAppendUrl/yyFc8Iclt2jxPmLztbP617xXllT.jpg'),
+                fit: BoxFit.cover)),
       ),
     );
   }

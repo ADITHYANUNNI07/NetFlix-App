@@ -8,34 +8,48 @@ import 'package:netflix/presentation/widgets/main_title.dart';
 import 'package:netflix/presentation/widgets/video_widget.dart';
 
 class ComingSoonWidget extends StatelessWidget {
+  final String id;
+  final String month;
+  final String day;
+  final String? backdropPath;
+  final String movieName;
+  final String description;
+
   const ComingSoonWidget({
     super.key,
+    required this.id,
+    required this.month,
+    required this.day,
+    required this.backdropPath,
+    required this.movieName,
+    required this.description,
   });
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(left: 0, top: 10, right: 4, bottom: 20),
       child: SizedBox(
         width: double.infinity,
-        height: 450,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.only(left: 8, right: 8),
               child: Column(
                 children: [
                   Text(
-                    'Feb'.toUpperCase(),
+                    month.toUpperCase(),
                     style: GoogleFonts.poppins(
                         color: colorGrey,
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    '11',
+                    day,
                     style: GoogleFonts.poppins(
-                        fontSize: 50, fontWeight: FontWeight.bold),
+                        fontSize: 47, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -44,20 +58,25 @@ class ComingSoonWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const VideoPlayerWidget(),
+                  VideoPlayerWidget(url: backdropPath),
                   sizedHeghitT,
                   Row(
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'FERDINAND',
-                            style: GoogleFonts.amaticSc(
-                                fontSize: 60, fontWeight: FontWeight.bold),
+                          SizedBox(
+                            width: size.width / 2.3,
+                            child: Text(
+                              movieName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.amaticSc(
+                                  fontSize: 50, fontWeight: FontWeight.bold),
+                            ),
                           ),
                           Text(
-                            'Coming on Friday',
+                            'Coming on $day $month',
                             style: GoogleFonts.poppins(
                                 fontSize: 17, color: colorGrey),
                           ),
@@ -87,11 +106,12 @@ class ComingSoonWidget extends StatelessWidget {
                       )
                     ],
                   ),
-                  MainTitle(title: 'FERDINAND'.toLowerCase()),
+                  MainTitle(title: movieName.toLowerCase()),
                   sizedHeghitT,
-                  const Text(
-                    'Landing the lead in the school musical is a dream come true for Jodi, until the pressure sends her confidence and her relationship Into a tailspin.',
-                    style: TextStyle(
+                  Text(
+                    description,
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
                         fontSize: 17,
                         color: colorGrey,
                         fontWeight: FontWeight.bold),

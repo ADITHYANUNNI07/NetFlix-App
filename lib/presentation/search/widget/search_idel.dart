@@ -1,16 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix/application/search/search_bloc.dart';
 import 'package:netflix/core/color/colors.dart';
 import 'package:netflix/core/costant.dart';
+import 'package:netflix/core/string.dart';
 import 'package:netflix/presentation/search/widget/search_title.dart';
-
-final imageUrl = [
-  "https://tse3.mm.bing.net/th?id=OIP.WwU-X-gMkh0TGnBc0M0_6QHaEC&pid=Api&P=0&h=180",
-  "https://media.themoviedb.org/t/p/w500_and_h282_face/e0M3WVJm4nBrAg0LbJq0gdKi3U7.jpg",
-  "https://media.themoviedb.org/t/p/w500_and_h282_face/meyhnvssZOPPjud4F1CjOb4snET.jpg",
-  "https://media.themoviedb.org/t/p/w500_and_h282_face/ehumsuIBbgAe1hg343oszCLrAfI.jpg",
-  "https://media.themoviedb.org/t/p/w500_and_h282_face/r9oTasGQofvkQY5vlUXglneF64Z.jpg",
-];
+import 'package:shimmer/shimmer.dart';
 
 class SearchIdleWidget extends StatelessWidget {
   const SearchIdleWidget({super.key});
@@ -23,11 +19,38 @@ class SearchIdleWidget extends StatelessWidget {
         const SearchTextTitleWidget(title: 'Top Searches'),
         sizedHeghitT,
         Expanded(
-          child: ListView.separated(
-            shrinkWrap: true,
-            itemBuilder: (context, index) => const TopSearchIteams(),
-            separatorBuilder: (context, index) => sizedHeghitT20,
-            itemCount: 10,
+          child: BlocBuilder<SearchBloc, SearchState>(
+            builder: (context, state) {
+              if (state.isLoading || state.idelList.isEmpty) {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return const TopSearchIteams(
+                      title: null,
+                      imageUrl: null,
+                    );
+                  },
+                  separatorBuilder: (context, index) => sizedHeghitT20,
+                  itemCount: 15,
+                );
+              } else if (state.isError) {
+                return const Center(child: Text('Error while getting data'));
+              }
+              final filteredList = state.idelList
+                  .where((movie) => movie.moiveTitle?.isNotEmpty ?? false)
+                  .toList();
+              return ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  final movie = filteredList[index];
+                  return TopSearchIteams(
+                      title: movie.moiveTitle ?? 'No title provided',
+                      imageUrl: '$imageAppendUrl${movie.backdropPath}');
+                },
+                separatorBuilder: (context, index) => sizedHeghitT20,
+                itemCount: filteredList.length,
+              );
+            },
           ),
         )
       ],
@@ -38,8 +61,11 @@ class SearchIdleWidget extends StatelessWidget {
 class TopSearchIteams extends StatelessWidget {
   const TopSearchIteams({
     super.key,
+    required this.title,
+    required this.imageUrl,
   });
-
+  final String? title;
+  final String? imageUrl;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width;
@@ -47,34 +73,78 @@ class TopSearchIteams extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8.0, right: 8.0),
       child: Row(
         children: [
-          Container(
-            width: size * 0.35,
-            height: 65,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover, image: NetworkImage(imageUrl[0]))),
-          ),
-          sizedWidthT,
-          const Expanded(
-            child: Text(
-              "Movie Name",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          const CircleAvatar(
-            backgroundColor: colorWhite,
-            radius: 25,
-            child: CircleAvatar(
-              backgroundColor: colorBlack,
-              radius: 23,
-              child: Center(
-                child: Icon(
-                  CupertinoIcons.play_fill,
-                  color: colorWhite,
+          imageUrl == null
+              ? Shimmer.fromColors(
+                  baseColor: Colors.grey.shade900.withOpacity(0.9),
+                  highlightColor: colorGrey.shade800,
+                  child: Container(
+                    width: size * 0.35,
+                    height: 75,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.grey.shade900.withOpacity(0.9),
+                    ),
+                  ),
+                )
+              : Container(
+                  width: size * 0.35,
+                  height: 75,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.grey.shade900.withOpacity(0.9),
+                      image: DecorationImage(
+                          fit: BoxFit.cover, image: NetworkImage(imageUrl!))),
                 ),
-              ),
-            ),
-          )
+          sizedWidthT,
+          Expanded(
+            child: title != null
+                ? Text(
+                    title!.toUpperCase(),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Shimmer.fromColors(
+                        baseColor: Colors.grey.shade900.withOpacity(0.9),
+                        highlightColor: colorGrey.shade800,
+                        child: Container(
+                            height: 20,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.grey.shade900.withOpacity(0.9),
+                            )),
+                      ),
+                      const SizedBox(height: 5),
+                      Shimmer.fromColors(
+                        baseColor: Colors.grey.shade900.withOpacity(0.9),
+                        highlightColor: colorGrey.shade800,
+                        child: Container(
+                          height: 20,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.grey.shade900.withOpacity(0.9),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
+          title == null ? sizedWidthT : Container(),
+          title == null
+              ? const SizedBox()
+              : const CircleAvatar(
+                  backgroundColor: colorWhite,
+                  radius: 20,
+                  child: CircleAvatar(
+                    backgroundColor: colorBlack,
+                    radius: 18,
+                    child: Icon(CupertinoIcons.play_fill,
+                        color: colorWhite, size: 20),
+                  ),
+                )
         ],
       ),
     );

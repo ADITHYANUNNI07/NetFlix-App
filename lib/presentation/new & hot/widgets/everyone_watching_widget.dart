@@ -6,8 +6,14 @@ import 'package:netflix/presentation/widgets/main_title.dart';
 import 'package:netflix/presentation/widgets/video_widget.dart';
 
 class EveryOneWatchingWidget extends StatelessWidget {
+  final String? backdropPath;
+  final String movieName;
+  final String description;
   const EveryOneWatchingWidget({
     super.key,
+    required this.backdropPath,
+    required this.movieName,
+    required this.description,
   });
 
   @override
@@ -16,15 +22,15 @@ class EveryOneWatchingWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         sizedHeghitT,
-        const MainTitle(title: 'Friends'),
+        MainTitle(title: movieName),
         sizedHeghitT,
-        const Text(
-          'Landing the lead in the school musical is a dream come true for Jodi, until the pressure sends her confidence and her relationship Into a tailspin.',
-          style: TextStyle(
+        Text(
+          description,
+          style: const TextStyle(
               fontSize: 17, color: colorGrey, fontWeight: FontWeight.bold),
         ),
         sizedHeghitT20,
-        const VideoPlayerWidget(),
+        VideoPlayerWidget(url: backdropPath),
         sizedHeghitT,
         const Row(
           mainAxisAlignment: MainAxisAlignment.end,

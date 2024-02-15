@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/core/color/colors.dart';
 import 'package:netflix/core/costant.dart';
+import 'package:netflix/core/string.dart';
 
 class VideoPlayerWidget extends StatelessWidget {
+  final String? url;
   const VideoPlayerWidget({
     super.key,
+    required this.url,
   });
 
   @override
@@ -16,10 +19,11 @@ class VideoPlayerWidget extends StatelessWidget {
           decoration: BoxDecoration(
               color: colorBlue,
               borderRadius: borderRadius10,
-              image: const DecorationImage(
-                  image: NetworkImage(
-                      'https://tse3.mm.bing.net/th?id=OIP.WwU-X-gMkh0TGnBc0M0_6QHaEC&pid=Api&P=0&h=180'),
-                  fit: BoxFit.cover)),
+              image: url == null
+                  ? null
+                  : DecorationImage(
+                      image: NetworkImage('$imageAppendUrl$url'),
+                      fit: BoxFit.cover)),
         ),
         Positioned(
           right: 5,
