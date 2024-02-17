@@ -1,24 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/core/color/colors.dart';
 import 'package:netflix/core/costant.dart';
+import 'package:netflix/core/string.dart';
 import 'package:netflix/presentation/home/screen_home.dart';
+import 'package:shimmer/shimmer.dart';
 
 class BackgroundCard extends StatelessWidget {
-  const BackgroundCard({super.key});
-
+  const BackgroundCard({super.key, required this.url});
+  final String? url;
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          width: double.infinity,
-          height: 600,
-          // color: colorBlue,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(7),
-              image: const DecorationImage(
-                  image: NetworkImage(mainImage), fit: BoxFit.cover)),
-        ),
+        url == null
+            ? Shimmer.fromColors(
+                baseColor: Colors.grey.shade900.withOpacity(0.9),
+                highlightColor: colorGrey.shade800,
+                child: Container(
+                  width: double.infinity,
+                  height: 600,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    color: colorWhite,
+                  ),
+                ),
+              )
+            : Container(
+                width: double.infinity,
+                height: 600,
+                // color: colorBlue,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    image: DecorationImage(
+                        image: NetworkImage('$imageAppendUrl$url'),
+                        fit: BoxFit.cover)),
+              ),
         Positioned(
           bottom: 10,
           left: 0,

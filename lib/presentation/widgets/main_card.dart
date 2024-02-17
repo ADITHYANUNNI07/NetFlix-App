@@ -6,10 +6,11 @@ class MainCardWidget extends StatelessWidget {
   const MainCardWidget({
     super.key,
     required this.size,
+    required this.imageUrl,
   });
 
   final Size size;
-
+  final String imageUrl;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -19,9 +20,8 @@ class MainCardWidget extends StatelessWidget {
         height: size.height * 0.3,
         decoration: BoxDecoration(
             borderRadius: borderRadius10,
-            image: const DecorationImage(
-                image: NetworkImage(
-                    '$imageAppendUrl/yyFc8Iclt2jxPmLztbP617xXllT.jpg'),
+            image: DecorationImage(
+                image: NetworkImage('$imageAppendUrl$imageUrl'),
                 fit: BoxFit.cover)),
       ),
     );

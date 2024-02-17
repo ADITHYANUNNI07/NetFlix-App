@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:netflix/application/Home/home_bloc.dart';
 import 'package:netflix/application/downloads/downloads_bloc.dart';
 import 'package:netflix/application/fast%20laughs/fast_laughs_bloc.dart';
 import 'package:netflix/application/hot%20&%20new/hot_and_new_bloc.dart';
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<DownloadsBloc>()),
         BlocProvider(create: (context) => getIt<SearchBloc>()),
         BlocProvider(create: (context) => getIt<FastLaughsBloc>()),
-        BlocProvider(create: (context) => getIt<HotAndNewBloc>())
+        BlocProvider(create: (context) => getIt<HotAndNewBloc>()),
+        BlocProvider(create: (context) => getIt<HomeBloc>())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix/application/fast%20laughs/fast_laughs_bloc.dart';
 import 'package:netflix/core/color/colors.dart';
-import 'package:netflix/core/string.dart';
 import 'package:netflix/domain/downloads/models/model_download.dart';
 import 'package:netflix/presentation/fast%20laughs/widgets/fast_laughs_video_list_item.dart';
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/core/costant.dart';
+import 'package:netflix/domain/home/models/home/home_repo.dart';
 import 'package:netflix/presentation/home/widgets/number_card.dart';
 import 'package:netflix/presentation/widgets/main_title.dart';
 
@@ -7,8 +8,9 @@ class NumberCardTitleWidget extends StatelessWidget {
   const NumberCardTitleWidget({
     super.key,
     required this.size,
+    required this.list,
   });
-
+  final List<HomeData> list;
   final Size size;
 
   @override
@@ -24,7 +26,8 @@ class NumberCardTitleWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               children: List.generate(
                 10,
-                (index) => NumberCard(index: index),
+                (index) =>
+                    NumberCard(index: index, url: list[index].posterPath ?? ''),
               )),
         ),
       ],

@@ -2,10 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix/application/Home/home_bloc.dart';
+import 'package:netflix/application/downloads/downloads_bloc.dart';
+import 'package:netflix/application/hot%20&%20new/hot_and_new_bloc.dart';
 import 'package:netflix/core/color/colors.dart';
 import 'package:netflix/core/costant.dart';
+import 'package:netflix/domain/home/models/home/home_repo.dart';
 import 'package:netflix/presentation/home/widgets/background_card.dart';
 import 'package:netflix/presentation/home/widgets/number_card_title.dart';
+import 'package:netflix/presentation/widgets/main_card.dart';
 import 'package:netflix/presentation/widgets/main_title_card.dart';
 
 ValueNotifier<bool> scrollNotifier = ValueNotifier(true);
@@ -15,6 +21,16 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<HomeBloc>(context).add(const LoadTrending());
+      BlocProvider.of<HomeBloc>(context).add(const LoadTopTen());
+      BlocProvider.of<HomeBloc>(context).add(const LoadRelesedPastYr());
+      BlocProvider.of<HotAndNewBloc>(context)
+          .add(const LoadDataInEveryoneWatching());
+      BlocProvider.of<HotAndNewBloc>(context).add(const LoadDataInComingSoon());
+      BlocProvider.of<DownloadsBloc>(context)
+          .add(const DownloadsEvent.getDownloadsImages());
+    });
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorBlack,
@@ -36,18 +52,147 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   ListView(
                     children: [
-                      const BackgroundCard(),
-                      MainTitleCardWidget(
-                          size: size, title: 'Released in the Past Year'),
+                      BlocBuilder<HotAndNewBloc, HotAndNewState>(
+                        builder: (context, state) {
+                          if (state.isLoading) {
+                            return const BackgroundCard(url: null);
+                          } else if (state.hasError) {
+                            return const Center(
+                              child: Text('Error'),
+                            );
+                          } else if (state.comingSoonList.isEmpty) {
+                            return const BackgroundCard(url: null);
+                          } else {
+                            return BackgroundCard(
+                                url: state.comingSoonList[5].posterPath ?? '');
+                          }
+                        },
+                      ),
+                      BlocBuilder<HomeBloc, HomeState>(
+                          builder: (context, state) {
+                        if (state.isLoading) {
+                          return MainTitleCardWidget(
+                            size: size,
+                            title: 'Released in the Past Year',
+                            isloading: true,
+                          );
+                        } else if (state.hasError) {
+                          return const Center(
+                            child: Text('Error'),
+                          );
+                        } else if (state.relesedList.isEmpty) {
+                          return MainTitleCardWidget(
+                            size: size,
+                            title: 'Released in the Past Year',
+                            isloading: true,
+                          );
+                        } else {
+                          return MainTitleCardWidget(
+                              list: state.relesedList,
+                              size: size,
+                              title: 'Released in the Past Year');
+                        }
+                      }),
                       sizedHeghitT,
-                      MainTitleCardWidget(size: size, title: 'Trending Now'),
+                      BlocBuilder<HomeBloc, HomeState>(
+                        builder: (context, state) {
+                          if (state.isLoading) {
+                            return MainTitleCardWidget(
+                              size: size,
+                              title: 'Trending Now',
+                              isloading: true,
+                            );
+                          } else if (state.hasError) {
+                            return const Center(
+                              child: Text('Error'),
+                            );
+                          } else if (state.trendingList.isEmpty) {
+                            return MainTitleCardWidget(
+                              size: size,
+                              title: 'Trending Now',
+                              isloading: true,
+                            );
+                          } else {
+                            List<HomeData> list = state.trendingList;
+
+                            return MainTitleCardWidget(
+                                size: size, title: 'Trending Now', list: list);
+                          }
+                        },
+                      ),
                       sizedHeghitT,
-                      NumberCardTitleWidget(size: size),
+                      BlocBuilder<HomeBloc, HomeState>(
+                        builder: (context, state) {
+                          if (state.isLoading) {
+                            return MainTitleCardWidget(
+                                size: size,
+                                title: 'Top 10 TV Shows In India Today',
+                                isloading: true);
+                          } else if (state.hasError) {
+                            return const Center(
+                              child: Text('Error'),
+                            );
+                          } else if (state.topList.isEmpty) {
+                            return MainTitleCardWidget(
+                                size: size,
+                                title: 'Top 10 TV Shows In India Today',
+                                isloading: true);
+                          } else {
+                            return NumberCardTitleWidget(
+                                size: size, list: state.topList);
+                          }
+                        },
+                      ),
                       sizedHeghitT,
-                      MainTitleCardWidget(size: size, title: 'Tense Dramas'),
+                      BlocBuilder<HotAndNewBloc, HotAndNewState>(
+                        builder: (context, state) {
+                          if (state.isLoading) {
+                            return MainTitleCardWidget(
+                              isloading: false,
+                              size: size,
+                              title: 'Tense Dramas',
+                            );
+                          } else if (state.hasError) {
+                            return const Center(
+                              child: Text('Error'),
+                            );
+                          } else if (state.everyOneIsWatchingList.isEmpty) {
+                            return MainTitleCardWidget(
+                              isloading: false,
+                              size: size,
+                              title: 'Tense Dramas',
+                            );
+                          } else {
+                            return MainTitleCardWidget(
+                                size: size,
+                                title: 'Tense Dramas',
+                                list: state.everyOneIsWatchingList);
+                          }
+                        },
+                      ),
                       sizedHeghitT,
-                      MainTitleCardWidget(
-                          size: size, title: 'South Indian Cinema'),
+                      BlocBuilder<DownloadsBloc, DownloadsState>(
+                        builder: (context, state) {
+                          if (state.isloading) {
+                            return MainTitleCardWidget(
+                              size: size,
+                              title: 'South Indian Cinema',
+                              isloading: true,
+                            );
+                          } else if (state.downloads == null) {
+                            return MainTitleCardWidget(
+                              size: size,
+                              title: 'South Indian Cinema',
+                              isloading: true,
+                            );
+                          } else {
+                            return MainTitleCardWidget(
+                                size: size,
+                                title: 'South Indian Cinema',
+                                list: state.downloads ?? []);
+                          }
+                        },
+                      ),
                       sizedHeghitT,
                     ],
                   ),

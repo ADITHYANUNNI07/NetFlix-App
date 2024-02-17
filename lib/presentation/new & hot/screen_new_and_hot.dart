@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:netflix/application/hot%20&%20new/hot_and_new_bloc.dart';
 import 'package:netflix/core/color/colors.dart';
 import 'package:netflix/core/costant.dart';
-import 'package:netflix/core/string.dart';
 import 'package:netflix/presentation/new%20&%20hot/widgets/coming_soon_widget.dart';
 import 'package:netflix/presentation/new%20&%20hot/widgets/everyone_watching_widget.dart';
 

@@ -18,44 +18,50 @@ class EveryOneWatchingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        sizedHeghitT,
-        MainTitle(title: movieName),
-        sizedHeghitT,
-        Text(
-          description,
-          style: const TextStyle(
-              fontSize: 17, color: colorGrey, fontWeight: FontWeight.bold),
-        ),
-        sizedHeghitT20,
-        VideoPlayerWidget(url: backdropPath),
-        sizedHeghitT,
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            VideoBtnNewAndHotWidget(icon: Icons.send, title: 'Share'),
-            sizedWidthT15,
-            VideoBtnNewAndHotWidget(icon: CupertinoIcons.add, title: 'My List'),
-            sizedWidthT15,
-            VideoBtnNewAndHotWidget(
-                icon: CupertinoIcons.play_arrow_solid, title: 'Play'),
-            sizedWidthT15
-          ],
-        ),
-        Row(
-          children: [
-            Image.asset('assets/images/logonetflix-removebg-preview.png',
-                height: 30),
-            sizedWidthT,
-            const Text(
-              'S E R I E S',
-              style: TextStyle(color: colorWhite, fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(7),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          sizedHeghitT,
+          MainTitle(title: movieName),
+          sizedHeghitT,
+          Text(
+            description,
+            textAlign: TextAlign.justify,
+            style: const TextStyle(
+                fontSize: 17, color: colorGrey, fontWeight: FontWeight.bold),
+          ),
+          sizedHeghitT20,
+          VideoPlayerWidget(url: backdropPath),
+          sizedHeghitT,
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              VideoBtnNewAndHotWidget(icon: Icons.send, title: 'Share'),
+              sizedWidthT15,
+              VideoBtnNewAndHotWidget(
+                  icon: CupertinoIcons.add, title: 'My List'),
+              sizedWidthT15,
+              VideoBtnNewAndHotWidget(
+                  icon: CupertinoIcons.play_arrow_solid, title: 'Play'),
+              sizedWidthT15
+            ],
+          ),
+          Row(
+            children: [
+              Image.asset('assets/images/logonetflix-removebg-preview.png',
+                  height: 30),
+              sizedWidthT,
+              const Text(
+                'S E R I E S',
+                style:
+                    TextStyle(color: colorWhite, fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
